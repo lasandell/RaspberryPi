@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Utility to control the GPIO pins of the Raspberry Pi
+#
+# Copyright 2012 Luke Sandell <lasandell@gmail.com>
+# Distributed under the Boost Software License, Version 1.0
+# (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+function gpio()
+{
+	PIN=$1
+	VERB=$2
+	VALUE=$3
+
+	GPIO_PATH=/sys/class/gpio
+	PIN_PATH=$GPIO_PATH/gpio$PIN
+
+	case $VERB in
+		read)
+			cat $PIN_PATH/value
+		;;
+
+		write)
+			echo $VALUE > $PIN_PATH/value
+		;;
+
+		mode)
+			if [ ! -e $PIN_PATH ]; then
+				echo $PIN > $GPIO_PATH/export
+			fi
+    		echo $VALUE > $PIN_PATH/direction
+		;;
+
+		*)
+			echo "Control the GPIO pins of the Raspberry Pi"
+			echo "Usage: $0 [pin] mode [in|out]"
+			echo "       $0 [pin] read"
+			echo "       $0 [pin] write [0|1]"
+		;;
+	esac
+}
+
+# Just invoke our function if called directly
+if [ "$BASH_SOURCE" == "$0" ]; then
+	gpio $@
+fi
+
