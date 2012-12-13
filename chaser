@@ -7,36 +7,37 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 
-DELAY=0.025
-PORTS=(0 1 4 7 8 9 10 11 14 15 17 18 21 22 23 24 25)
+GPIO_PINS=(0 1 4 7 8 9 10 11 14 15 17 18 21 22 23 24 25)
 # Uncomment the following line for Raspberry Pi Revision 2
-# PORTS=(2 3 4 7 8 9 10 11 14 15 17 18 22 23 24 25 27)
+# GPIO_PORTS=(2 3 4 7 8 9 10 11 14 15 17 18 22 23 24 25 27)
+
+delay=0.025
 
 # Include gpio script to access the gpio function directly
 source ./gpio
 
-# Set all ports to output mode
-for PORT in ${PORTS[@]}; do
-	gpio $PORT mode out
-done
+pins=${#GPIO_PINS[@]}
 
-PORT_COUNT=${#PORTS[@]}
+# Set all ports to output mode
+for ((pin = 0; pin < pins; pin++)); do
+	gpio $pin mode out
+done
 
 # Loop until CTRL-C is pressed
 while true; do
 
-	# Loop through the ports, turning them on then off
-	for ((INDEX=0; INDEX < PORT_COUNT - 1; INDEX++)); do
-		gpio ${PORTS[$INDEX]} write 1
-		sleep $DELAY
-		gpio ${PORTS[$INDEX]} write 0
+	# Loop through the pins, turning them on then off
+	for ((pin = 0; pin < pins - 1; pin++)); do
+		gpio $pin write 1
+		sleep $delay
+		gpio $pin write 0
 	done
 
-	# Loop through the ports in reverse order
-	for ((INDEX = PORT_COUNT - 1; INDEX > 0; INDEX--)); do
-		gpio ${PORTS[$INDEX]} write 1
-		sleep $DELAY
-		gpio ${PORTS[$INDEX]} write 0
+	# Loop through the pins in reverse order
+	for ((pin = pins - 1; pin > 0; pin--)); do
+		gpio $pin write 1
+		sleep $delay
+		gpio $pin write 0
 	done
 
 done
