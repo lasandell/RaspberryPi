@@ -9,8 +9,8 @@
 
 function gpio()
 {
-	local pin=$1
-	local verb=$2
+	local verb=$1
+	local pin=$2
 	local value=$3
 
 	if [ -n "$GPIO_PINS" ]; then
@@ -38,9 +38,9 @@ function gpio()
 
 		*)
 			echo "Control the GPIO pins of the Raspberry Pi"
-			echo "Usage: $0 [pin] mode [in|out]"
-			echo "       $0 [pin] read"
-			echo "       $0 [pin] write [0|1]"
+			echo "Usage: $0 mode [pin] [in|out]"
+			echo "       $0 read [pin]"
+			echo "       $0 write [pin] [0|1]"
 			echo "If the GPIO_PINS is an environment variable containing"
 			echo "an array of integers, then up to 17 logical pins (0-16)"
 			echo "will  map to the physical pins specified in the array."
