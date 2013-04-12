@@ -17,20 +17,20 @@ source ./gpio
 
 # initialize pins
 for ((i = 0; i < pins; i++)) do
-	gpio mode $i out
-	gpio write $i 0
+    gpio mode $i out
+    gpio write $i 0
 done
 
 # loop counter until ctrl-c is pressed
 while true; do
-	for ((value = 0; value < 2 ** pins; value++)); do
-		remainder=$value
-		for((pin = pins - 1; pin >= 0; pin--)); do
-			power=$((2 ** pin))
-			digit=$((remainder / power))
-			remainder=$((remainder % power))
-			gpio write $pin $digit
-		done
-		sleep $delay
-	done
+    for ((value = 0; value < 2 ** pins; value++)); do
+        remainder=$value
+        for((pin = pins - 1; pin >= 0; pin--)); do
+            power=$((2 ** pin))
+            digit=$((remainder / power))
+            remainder=$((remainder % power))
+            gpio write $pin $digit
+        done
+        sleep $delay
+    done
 done

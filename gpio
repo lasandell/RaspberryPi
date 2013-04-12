@@ -9,47 +9,47 @@
 
 function gpio()
 {
-	local verb=$1
-	local pin=$2
-	local value=$3
+    local verb=$1
+    local pin=$2
+    local value=$3
 
-	if [ -n "$GPIO_PINS" ]; then
-		pin=${GPIO_PINS[pin]}
-	fi
+    if [ -n "$GPIO_PINS" ]; then
+        pin=${GPIO_PINS[pin]}
+    fi
 
-	local gpio_path=/sys/class/gpio
-	local pin_path=$gpio_path/gpio$pin
+    local gpio_path=/sys/class/gpio
+    local pin_path=$gpio_path/gpio$pin
 
-	case $verb in
-		read)
-			cat $pin_path/value
-		;;
+    case $verb in
+        read)
+            cat $pin_path/value
+        ;;
 
-		write)
-			echo $value > $pin_path/value
-		;;
+        write)
+            echo $value > $pin_path/value
+        ;;
 
-		mode)
-			if [ ! -e $pin_path ]; then
-				echo $pin > $gpio_path/export
-			fi
-    		echo $value > $pin_path/direction
-		;;
+        mode)
+            if [ ! -e $pin_path ]; then
+                echo $pin > $gpio_path/export
+            fi
+            echo $value > $pin_path/direction
+        ;;
 
-		*)
-			echo "Control the GPIO pins of the Raspberry Pi"
-			echo "Usage: $0 mode [pin] [in|out]"
-			echo "       $0 read [pin]"
-			echo "       $0 write [pin] [0|1]"
-			echo "If the GPIO_PINS is an environment variable containing"
-			echo "an array of integers, then up to 17 logical pins (0-16)"
-			echo "will  map to the physical pins specified in the array."
-		;;
-	esac
+        *)
+            echo "Control the GPIO pins of the Raspberry Pi"
+            echo "Usage: $0 mode [pin] [in|out]"
+            echo "       $0 read [pin]"
+            echo "       $0 write [pin] [0|1]"
+            echo "If the GPIO_PINS is an environment variable containing"
+            echo "an array of integers, then up to 17 logical pins (0-16)"
+            echo "will  map to the physical pins specified in the array."
+        ;;
+    esac
 }
 
-# Just invoke our function if called directly
+# Just invoke our function if the script is called directly
 if [ "$BASH_SOURCE" == "$0" ]; then
-	gpio $@
+    gpio $@
 fi
 

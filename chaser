@@ -20,24 +20,24 @@ pins=${#GPIO_PINS[@]}
 
 # Set all ports to output mode
 for ((pin = 0; pin < pins; pin++)); do
-	gpio mode $pin out
+    gpio mode $pin out
 done
 
 # Loop until CTRL-C is pressed
 while true; do
 
-	# Loop through the pins, turning them on then off
-	for ((pin = 0; pin < pins - 1; pin++)); do
-		gpio write $pin 1
-		sleep $delay
-		gpio write $pin 0
-	done
+    # Loop through the pins, turning them on then off
+    for ((pin = 0; pin < pins - 1; pin++)); do
+        gpio write $pin 1
+        sleep $delay
+        gpio write $pin 0
+    done
 
-	# Loop through the pins in reverse order
-	for ((pin = pins - 1; pin > 0; pin--)); do
-		gpio write $pin 1
-		sleep $delay
-		gpio write $pin 0
-	done
+    # Loop through the pins in reverse order
+    for ((pin = pins - 1; pin > 0; pin--)); do
+        gpio write $pin 1
+        sleep $delay
+        gpio write $pin 0
+    done
 
 done
