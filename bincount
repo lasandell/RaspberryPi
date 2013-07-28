@@ -1,27 +1,23 @@
 #!/bin/bash
 
 # Binary LED counter for Raspberry Pi
-# Copyright 2012 Luke Sandell <lasandell@gmail.com>
-# Distributed under the Boost Software License, Version 1.0
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
 
-GPIO_PINS=(0 1 4 7 8 9 10 11 14 15 17 18 21 22 23 24 27)
-# uncomment the following line for Raspberry Pi Revision 2
-# PORTS=(2 3 4 7 8 9 10 11 14 15 17 18 22 23 24 25 27)
+GPIO_PINS='0 1 4 7 8 9 10 11 14 15 17 18 21 22 23 24 27'
+# Uncomment the following line for Raspberry Pi Revision 2
+# GPIO_PINS='2 3 4 7 8 9 10 11 14 15 17 18 22 23 24 25 27'
 pins=17
 delay=1
 
-# include gpio script to access the gpio function directly
+# Include gpio script to access the gpio function directly
 source ./gpio
 
-# initialize pins
-for ((i = 0; i < pins; i++)) do
-    gpio mode $i out
-    gpio write $i 0
+# Initialize pins
+for ((pin = 0; pin < pins; pin++)); do
+    gpio mode $pin out
+    gpio write $pin 0
 done
 
-# loop counter until ctrl-c is pressed
+# Loop until CTRL-C is pressed
 while true; do
     for ((value = 0; value < 2 ** pins; value++)); do
         remainder=$value

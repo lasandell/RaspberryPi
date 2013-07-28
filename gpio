@@ -1,11 +1,8 @@
 #!/bin/bash
 
 # Utility to control the GPIO pins of the Raspberry Pi
-#
-# Copyright 2012 Luke Sandell <lasandell@gmail.com>
-# Distributed under the Boost Software License, Version 1.0
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# Can be called as a script or sourced so that the gpio
+# function can be called directly
 
 function gpio()
 {
@@ -13,8 +10,9 @@ function gpio()
     local pin=$2
     local value=$3
 
-    if [ -n "$GPIO_PINS" ]; then
-        pin=${GPIO_PINS[pin]}
+    local pins=($GPIO_PINS)
+    if [[ "$pin" -lt ${#pins[@]} ]]; then
+        local pin=${pins[$pin]}
     fi
 
     local gpio_path=/sys/class/gpio
@@ -41,9 +39,10 @@ function gpio()
             echo "Usage: $0 mode [pin] [in|out]"
             echo "       $0 read [pin]"
             echo "       $0 write [pin] [0|1]"
-            echo "If the GPIO_PINS is an environment variable containing"
-            echo "an array of integers, then up to 17 logical pins (0-16)"
-            echo "will  map to the physical pins specified in the array."
+            echo "If GPIO_PINS is an environment variable containing"
+            echo "a space-delimited list of integers, then up to 17"
+            echo "logical pins (0-16) will map to the physical pins"
+            echo "specified in the list."
         ;;
     esac
 }
