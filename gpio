@@ -34,11 +34,20 @@ function gpio()
             echo $value > $pin_path/direction
         ;;
 
+        state)
+            if [ -e $pin_path ]; then
+                local dir=$(cat $pin_path/direction)
+                local val=$(cat $pin_path/value)
+                echo "$dir $val"
+            fi
+        ;;
+
         *)
             echo "Control the GPIO pins of the Raspberry Pi"
             echo "Usage: $0 mode [pin] [in|out]"
             echo "       $0 read [pin]"
             echo "       $0 write [pin] [0|1]"
+            echo "       $0 state [pin]"
             echo "If GPIO_PINS is an environment variable containing"
             echo "a space-delimited list of integers, then up to 17"
             echo "logical pins (0-16) will map to the physical pins"
